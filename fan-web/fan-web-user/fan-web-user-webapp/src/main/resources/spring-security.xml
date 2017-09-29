@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+			 xmlns:beans="http://www.springframework.org/schema/beans"
+			 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			 xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/security
+		http://www.springframework.org/schema/security/spring-security.xsd">
+
+	<http pattern="/selin/fileAction/getFile.action*" security="none" />
+
+	<http>
+		<intercept-url pattern="/**" access="hasRole('USER')" />
+		<form-login  />
+		<logout />
+	</http>
+
+	<authentication-manager>
+		<authentication-provider ref='myAuthenticationProvider'/>
+
+	</authentication-manager>
+
+	<beans:bean id="myAuthenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+		<beans:property name="hideUserNotFoundExceptions" value="false" />
+		<beans:property name="userDetailsService" ref="userDetailsService" />
+	</beans:bean>
+
+	<beans:bean id="userDetailsService" class="org.fan.web.user.service.impl.UserDetailsServiceImpl" />
+
+	<!--<authentication-manager>
+		<authentication-provider>
+			<user-service>
+				<user name="jimi" password="jimispassword" authorities="ROLE_USER, ROLE_ADMIN" />
+				<user name="bob" password="bobspassword" authorities="ROLE_USER" />
+			</user-service>
+		</authentication-provider>
+	</authentication-manager>-->
+
+
+
+</beans:beans>
